@@ -1,7 +1,7 @@
 import java.util.Random;
 
 /**
- * Die: represents what is being held in the Hand ArrayList of Die. 
+ * Die: represents what is being held in the Hand ArrayList of Die. The Die contains a faceValue variable. 
  */
 public class Die {
     int faceValue;
