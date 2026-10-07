@@ -25,11 +25,28 @@ public class Farkle {
      */
     public static void main (String[] args) {
         {
+            //make a banner 
+            //System.out.println("*********************************************");
+            //System.out.println("*        Zag Farkle by Fiona Callahan!      *");
+            //System.out.println("               Copyright: 2026               ");
+            //System.out.println("*********************************************");
+
+            //System.out.println("Welcome to Farkle! What is your name? ");
+            //Scanner input = new Scanner(System.in);
+            //String name = input.nextLine();
+
+            //if (name.isEmpty())
+            //{
+              //  name = "Unknown Player";
+            //}
+
+
             //do not make longer than 10 lines 
             //scorecard: appendix B 
             //combos: appendix A
             //may want to use an ArrayList to store a hand
-            System.out.println("Your first move of the game is rolling the dice: ");
+
+            //System.out.println(name + ": your first move of the game is rolling the dice: ");
             ArrayList <Die> hand = HandOfDie.createHand();
             HandOfDie.showHand(hand);
 
