@@ -130,8 +130,8 @@ public class PlayGame{
                     {
 
                         //in regards to requirement 2: should points in meld bank or just go to waste 
-                        //System.out.println("Sounds good! Thanks for playing");
-                        //totalScore += meldScore;
+                        System.out.println("Sounds good! Thanks for playing");
+                        totalScore += meldScore;
                         done = true;
                     }
                     else if (letter == 'K')
