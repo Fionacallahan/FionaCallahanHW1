@@ -23,7 +23,7 @@ import java.util.Scanner;
 public class Farkle {
     /**
      * The main method. Creates a hand, and then shows the hand to the user. 
-     * Starts the game and sends the user into other methods. 
+     * Starts the game and sends the user into other methods. Asks the user their name.
      * @param args
      */
     public static void main (String[] args) {

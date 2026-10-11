@@ -12,7 +12,8 @@ public class PlayGame{
     /**
      * checkFarkle() detects if there is a farkle thrown at first. If not, it moves on to find pair counts, or straights. 
      * The user interface here is easy to follow, as it allows the user to add any dice in the "roll" category into the meld category 
-     * where they cannot move it untilt the end when a new turn persists. 
+     * where they cannot move it until the end when a new turn persists. The player is prompted to reroll their unmelded dice during their turn. 
+     * A checkHand part has been added, where the player is given the opportunity to reroll their six dice if they rolled a Hot Hand. 
      * @param hand
      * @param saved
      * @param savedNumber
@@ -130,6 +131,7 @@ public class PlayGame{
                         }
                         Scorecard.checkStraight(meldScore, meldDiceSizesCount);
 
+                        //HOT HAND DETECTION
                         hotHandDetection += 1;
                         //System.out.println("hot hand detection: " + hotHandDetection);
                         if (hotHandDetection == 6)
@@ -184,6 +186,8 @@ public class PlayGame{
                         totalScore += meldScore;
                         done = true;
                     }
+
+                    //REROLL OPTION
                     else if (letter == 'R')
                     {
                         //When rerolling - check for a farkle
@@ -224,7 +228,7 @@ public class PlayGame{
 
                         
                         
-                        //checking for a farkle
+                        //checking for a farkle - after reroll
                         farkle = true;
                         if (saved.get(1).getFaceValue() != 0 || saved.get(5).getFaceValue() != 0 )
                         {
@@ -302,11 +306,11 @@ public class PlayGame{
     
             }
 
-            System.out.println("Quantity of each die value: ");
-            for (int i = 1; i < 7; i++)
-            {
-                System.out.print(saved.get(i).getFaceValue() + " || ");
-            }
+            //System.out.println("Quantity of each die value: ");
+            //for (int i = 1; i < 7; i++)
+            //{
+              //  System.out.print(saved.get(i).getFaceValue() + " || ");
+            //}
 
 
             checkFarkle(hand, saved, savedNumber);
