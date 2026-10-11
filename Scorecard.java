@@ -49,6 +49,7 @@ public class Scorecard {
                 boolean isTripleSet = false;
                 for( int i = 0; i < 6; i++ ) {
                     if(meldDiceSizesCount[i] >= 3 ) {
+                        //int j = i + 1;
                         // Found triple (or more!)
                         isTripleSet = true;
                         int tripleSetPoints = 0;
@@ -101,6 +102,7 @@ public class Scorecard {
             if (hand.get(i).getFaceValue() != 0)
             {
                 System.out.println(hand.get(i).getFaceValue());
+                //System.out.println("skipping line");
             }
             else{
                 System.out.print(" ");
@@ -111,6 +113,7 @@ public class Scorecard {
             //MELD 
             if (meld.get(i).getFaceValue() != 0)
             {
+                //System.out.println("printing meld");
                 System.out.print(meld.get(i).getFaceValue());
             }
             else{

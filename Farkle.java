@@ -2,9 +2,12 @@
 * This program allows the user to play a Farkle game implementation. 
 * Each user can play a round of Farkle where they are prompted to roll the dice, 
 * display their hand, and decide whether or not to move their dice to their meld. 
-* The round ends when they bank their dice, and their final total score is then shown. 
+* The user can now reroll any unmelded dice, bank their dice, or quit on their turn.
+* When the round ends, their final total score is then shown. 
+* A special feature that has been added is detecting a "Hot Hand", where all 6 dice can be used towards their score. 
+* Testing has not been added to this program yet
 * CPSC 224-02 - MWF 10:10-11:00 
-* Programming Assignment #1
+* Programming Assignment #2
 * Sources to cite: GeeksforGeeks, W3Schools
 * 
 * @author Fiona Callahan

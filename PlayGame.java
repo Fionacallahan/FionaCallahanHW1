@@ -20,6 +20,7 @@ public class PlayGame{
      */
     public static boolean checkFarkle(ArrayList <Die> hand, ArrayList <Die> saved, int savedNumber)
     {
+        int hotHandDetection = 0;
         // detect if there is a farkle thrown 
         // if not a farkle... which dice to add to meld?
         boolean farkle = true;
@@ -66,12 +67,13 @@ public class PlayGame{
                 meld.add(newDieSet);
             }
 
+
             while (!done)
             {
                 //PRINT STATUS
-                Scorecard.printStatus(hand, meld, done);
+                //Scorecard.printStatus(hand, meld, done);
                 boolean isValidMeld = false;
-                meldScore = 0;
+                //meldScore = 0;
 
                 // creating a meldDiceCount
                 int meldDiceCount = 0;
@@ -84,6 +86,7 @@ public class PlayGame{
                         meldDiceCount += 1;
                     }
                 }
+                meldScore = 0;
 
 
                 //creating a meldDiceSizesCount
@@ -97,16 +100,17 @@ public class PlayGame{
                 //check straight: 
 
                 meldScore += Scorecard.checkStraight(meldScore, meldDiceSizesCount);
+                Scorecard.printStatus(hand, meld, done);
                 System.out.println("                Meld Score: " + meldScore);
                 System.out.println();
 
                 System.out.println(" (K) BanK Meld & End Round");
                 System.out.println(" (Q) Quit game");
+                System.out.println("(R) Reroll the dice not yet melded");
                 System.out.println();
                 System.out.print("Enter letters for your choice(s): ");
                 Scanner input = new Scanner(System.in);
                 futureUserInput = input.nextLine();
-
                 for (int i = 0; i < futureUserInput.length(); i++)
                 {
                     char letter = Character.toUpperCase(futureUserInput.charAt(i));
@@ -124,6 +128,45 @@ public class PlayGame{
                             hand.get(index).setFaceValue(meld.get(index).getFaceValue());
                             meld.get(index).setFaceValue(0);
                         }
+                        Scorecard.checkStraight(meldScore, meldDiceSizesCount);
+
+                        hotHandDetection += 1;
+                        //System.out.println("hot hand detection: " + hotHandDetection);
+                        if (hotHandDetection == 6)
+                        {
+                            meldScore += Scorecard.checkStraight(meldScore, meldDiceSizesCount);
+                            Scorecard.printStatus(hand, meld, done);
+                            System.out.println("***** HOT HAND! *****");
+                            System.out.println("Would you like to (R) roll 6 new dice, or (B) bank and end ur turn? ");
+                            String option3 = input.nextLine();
+                            
+                            if (option3.equals("B"))
+                            {
+                                totalScore += meldScore;
+                                done = true;
+                            }
+                            else if (option3.equals("R"))
+                            {
+                                totalScore += meldScore;
+                                System.out.println("totalScore: " + totalScore);
+
+                                for (int k = 0; k < 6; k ++)
+                                {
+                                    //hand = HandOfDie.createHand();
+                                    hand.get(k).roll();
+                                    for (int h = 0; h < 6; h ++)
+                                    {
+                                        meld.get(h).setFaceValue(0);
+                                    }
+                                    
+                                }
+                                meldScore = 0;
+
+                            }
+                            else{
+                                System.out.println("Not valid option. ");
+                            }
+                        }
 
                     }
                     else if (letter == 'Q')
@@ -131,7 +174,9 @@ public class PlayGame{
 
                         //in regards to requirement 2: should points in meld bank or just go to waste 
                         System.out.println("Sounds good! Thanks for playing");
-                        totalScore += meldScore;
+                        System.out.println("Total score: " + totalScore);
+                        System.out.println("Your unmelded points have not been added to your total score.");
+                        System.out.println("Your total score is reflective of what was in your bank");
                         done = true;
                     }
                     else if (letter == 'K')
@@ -139,14 +184,92 @@ public class PlayGame{
                         totalScore += meldScore;
                         done = true;
                     }
+                    else if (letter == 'R')
+                    {
+                        //When rerolling - check for a farkle
+                        System.out.println("These dice are now rerolled:  ");
+                        for (int j = 0; j< 6; j++)
+                        {
+                            //HAND 
+                            if (hand.get(j).getFaceValue() != 0)
+                            {
+                                hand.get(j).roll();
+                                //System.out.println(hand.get(j).getFaceValue());
+                            }
+                            else{
+                                //System.out.print(" ");
+                            }
+
+                            //System.out.print("  |     ");
+
+                        }
+
+                        int current;
+                        for (int b = 1; b < 7; b++)
+                        {
+                            saved.get(b).setFaceValue(0);
+                        }
+                        for (int z = 0; z < 6; z++)
+                        {
+                            current = saved.get(hand.get(z).getFaceValue()).getFaceValue();
+                            saved.get(hand.get(z).getFaceValue()).setFaceValue(current + 1);
+                
+                        }
+                        Scorecard.printStatus(hand, meld, done);
+                        //System.out.println("Quantity of each die value: ");
+                        //for (int b = 1; b < 7; b++)
+                        ///{
+                           // System.out.print(saved.get(b).getFaceValue() + " || ");
+                        //}
+
+                        
+                        
+                        //checking for a farkle
+                        farkle = true;
+                        if (saved.get(1).getFaceValue() != 0 || saved.get(5).getFaceValue() != 0 )
+                        {
+                            farkle = false;
+                        }
+
+                        for (int l = 2; l < 7; l++)
+                        {
+                            if (saved.get(l).getFaceValue() >= 3)
+                            {
+                                farkle = false;
+                            }
+                        }
+
+                        pairCount = 0;
+                        done = false;
+                        for (int m = 1; m < 7; m++)
+                        {
+                            if (saved.get(m).getFaceValue() == 2)
+                            {
+                                pairCount += 1;
+                            }
+                        }
+                        if (pairCount == 3)
+                        {
+                            farkle = false;
+                        }
+
+                        totalScore = 0;
+                        if (farkle)
+                        {
+                            System.out.println("FARKLE! Points: 0");
+                            done = true;
+                        }
+                        
+                    }
                 }
                 System.out.println();
-                System.out.println("Round Over. total score is now: " + totalScore);
+                //System.out.println("total score is now: " + totalScore);
                 System.out.println();
         
             }
+            System.out.println("ROUND OVER. total score is now: " + totalScore);
         }
-        //WHY 
+        
         return done;
     }
 
