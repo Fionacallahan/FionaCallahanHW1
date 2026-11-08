@@ -21,14 +21,7 @@ public class HandOfDie {
         for (int i = 0; i < 6; i++)
         {
             myDie = new Die();
-            //COMMENT BACK IN: myDie.roll();
-            if(i == 0 || i == 1)
-            {
-                myDie.setFaceValue(1);
-            }
-            else{
-                myDie.setFaceValue(2);
-            }
+            myDie.roll();
             //myDie.setFaceValue(1);
             hand.add(myDie);
         }

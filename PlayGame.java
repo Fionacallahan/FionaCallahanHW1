@@ -19,7 +19,7 @@ public class PlayGame{
      * @param savedNumber
      * @return boolean
      */
-    public static boolean checkFarkle(ArrayList <Die> hand, ArrayList <Die> saved, int savedNumber, Player player)
+    public static boolean checkFarkle(ArrayList <Die> hand, ArrayList <Die> saved, int savedNumber, Player player, Player [] playerArray)
     {
         int hotHandDetection = 0;
         // detect if there is a farkle thrown 
@@ -181,9 +181,29 @@ public class PlayGame{
 
                         //in regards to requirement 2: should points in meld bank or just go to waste 
                         System.out.println("Sounds good! Thanks for playing");
-                        System.out.println("Total score: " + totalScore);
                         System.out.println("Your unmelded points have not been added to your total score.");
                         System.out.println("Your total score is reflective of what was in your bank");
+                        System.out.println("Current Total Points: ");
+
+                        for (int playerIndex = 0; playerIndex < playerArray.length; playerIndex ++)
+                        {
+                            System.out.println("    " + playerArray[playerIndex].getName() + ": " + playerArray[playerIndex].getTotalScore());
+                        }
+                        int highestScore = 0;
+                        String winning_name = "";
+                        for (int j = 0; j < playerArray.length; j ++)
+                        {
+                            if (playerArray[j].getTotalScore() > highestScore)
+                            {
+                                winning_name = playerArray[j].getName();
+                                highestScore = playerArray[j].getTotalScore();
+                            }
+
+                        }
+                        System.out.println("--------------------------------------------------------");
+                        System.out.println(winning_name + " has won the game with a total of " + highestScore + " points.");
+                        System.out.println("--------------------------------------------------------");
+                        System.exit(0);
                         done = true;
                     }
                     else if (letter == 'K')
@@ -293,10 +313,12 @@ public class PlayGame{
 
     public static void startGame(String choice, ArrayList<Die> hand, int points, Player player, Player [] playerArray)
     {
+        boolean endGame = false;
+        int playersToGo = 0;
         int index = 0;
         //double check
         if (choice.equals("y")){
-            while (player.getTotalScore() < points)
+            while (!endGame || playersToGo < playerArray.length)
             {
                 int savedNumber = 0;
 
@@ -317,7 +339,7 @@ public class PlayGame{
         
                 }
 
-                checkFarkle(hand, saved, savedNumber, player);
+                checkFarkle(hand, saved, savedNumber, player, playerArray);
 
 
                 System.out.println("Current Total Points: ");
@@ -329,23 +351,38 @@ public class PlayGame{
 
                 System.out.println("ROUND OVER. total score is now: " + player.getTotalScore());
 
-                if (player.getTotalScore() >= points)
+                if (player.getTotalScore() >= points || endGame == true)
                 {
-                    int highestScore = 0;
-                    String winning_name;
-                    for (int i = 0; i < playerArray.length; i ++)
+                    System.out.println("");
+                    System.out.println("Current phase of game play: ENDGAME");
+                    playersToGo += 1;
+                    if (endGame && playersToGo == playerArray.length)
                     {
-                        if (playerArray[i].getTotalScore() > highestScore)
+                        int highestScore = 0;
+                        String winning_name = "";
+                        for (int i = 0; i < playerArray.length; i++)
                         {
-                            winning_name = playerArray[i].getName();
-                            highestScore = playerArray[i].getTotalScore();
-                        }
+                            if (playerArray[i].getTotalScore() > highestScore)
+                            {
+                                winning_name = playerArray[i].getName();
+                                highestScore = playerArray[i].getTotalScore();
+                            }
 
+                        }
+                        System.out.println("--------------------------------------------------------");
+                        System.out.println(winning_name + " has won the game with a total of " + highestScore + " points.");
+                        System.out.println("--------------------------------------------------------");
+                        System.exit(0);
                     }
-                    System.exit(0);
+                    else{
+                        endGame = true;
+                    }
                 }
 
-                player = playerArray[(index + 1) % playerArray.length];
+                //index += 1;
+
+                index += 1;
+                player = playerArray[(index) % playerArray.length];
                 System.out.println(player.getName() + " - It is now your turn. Your current score is " + player.getTotalScore());
                 System.out.println("You get to roll the dice");
                 //System.out.println(playerArray[0].getName() + ": your first move of the game is rolling the dice: ");

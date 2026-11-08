@@ -4,7 +4,7 @@ import java.util.Random;
  * Die: represents what is being held in the Hand ArrayList of Die. The Die contains a faceValue variable. 
  */
 public class Die {
-    int faceValue;
+    private int faceValue;
 
     /**
      * The roll class randomly chooses a number between one and six and assigns

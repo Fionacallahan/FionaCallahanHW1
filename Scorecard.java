@@ -6,7 +6,6 @@ import java.util.ArrayList;
  */
 public class Scorecard {
 
-
     /**
      * Checks if there is a Straight shown in the dice, but also it checks for triples, pairs, and other points 
      * that could be acquired from ones or fives. 
@@ -32,6 +31,8 @@ public class Scorecard {
         else{
             //check pairs 
             int pairCount = 0;
+
+            //checks for FullHouse
             boolean fullHousepossibility = false;
             for (int i = 0; i < 6; i ++)
             {
