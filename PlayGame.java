@@ -52,8 +52,8 @@ public class PlayGame{
             farkle = false;
         }
 
-        int totalScore = 0;
-        player.setTotalScore(totalScore);
+        int totalScore = player.getTotalScore();
+        //player.setTotalScore(totalScore);
         if (farkle)
         {
             System.out.println("FARKLE! Points: 0");
@@ -142,9 +142,19 @@ public class PlayGame{
                             meldScore = Scorecard.checkStraight(meldScore, meldDiceSizesCount);
                             //print(meldScore);
                             Scorecard.printStatus(hand, meld, done);
+                            System.out.println("current meldScore: " + meldScore);
+                            
+                            //DEBUGGING
+                            //System.out.println("Hot Hand!");
+                            //System.out.println("meldScore = " + meldScore);
+                            //System.out.println("totalScore before = " + totalScore);
+                            
                             totalScore += meldScore;
+
+                            //DEBUGGING
+                            //System.out.println("totalScore after = " + totalScore);
                             player.setTotalScore(totalScore);
-                            System.out.println("totalScore so far: " + totalScore);
+                            System.out.println("totalScore so far: " + player.getTotalScore());
                             System.out.println("***** HOT HAND! *****");
                             System.out.println("Would you like to (R) roll 6 new dice, or (B) bank and end ur turn? ");
                             String option3 = input.nextLine();
@@ -283,8 +293,8 @@ public class PlayGame{
                             farkle = false;
                         }
 
-                        totalScore = 0;
-                        player.setTotalScore(totalScore);
+                        //totalScore = 0;
+                        //player.setTotalScore(totalScore);
                         if (farkle)
                         {
                             System.out.println("FARKLE! Points: 0");
@@ -381,6 +391,14 @@ public class PlayGame{
 
                 //index += 1;
 
+                if (endGame && playerArray.length == 1)
+                {
+                    System.out.println("-------------------------------------------------------");
+                    System.out.println("You have ended the game with " + playerArray[0].getTotalScore() + " Points!!");
+                    System.out.println("-------------------------------------------------------");
+                    return;
+                }
+
                 index += 1;
                 player = playerArray[(index) % playerArray.length];
                 System.out.println(player.getName() + " - It is now your turn. Your current score is " + player.getTotalScore());
@@ -395,11 +413,8 @@ public class PlayGame{
             }
             
             
-            //System.out.println("Quantity of each die value: ");
-            //for (int i = 1; i < 7; i++)
-            //{
-              //  System.out.print(saved.get(i).getFaceValue() + " || ");
-            //}
     }
 
-}}
+    }
+
+}

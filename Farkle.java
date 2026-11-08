@@ -82,21 +82,14 @@ public class Farkle {
                 {
                     playerArray[i] = new Player();
                     playerArray[i].setName("Unknown Player #" + (i + 1));
+                    playerArray[i].setTotalScore(0);
                 }
                 else{
                     playerArray[i] = new Player();
                     playerArray[i].setName(playerName);
+                    playerArray[i].setTotalScore(0);
                 }
             }
-
-            //System.out.println("Welcome to Farkle! What is player 1's name?  ");
-            //Scanner input = new Scanner(System.in);
-            //String PlayerOne = input.nextLine();
-
-            //if (PlayerOne.isEmpty())
-            //{
-                //PlayerOne = "Unknown Player";
-            //}
 
 
             //VARIABLES: 
