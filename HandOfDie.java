@@ -21,7 +21,15 @@ public class HandOfDie {
         for (int i = 0; i < 6; i++)
         {
             myDie = new Die();
-            myDie.roll();
+            //COMMENT BACK IN: myDie.roll();
+            if(i == 0 || i == 1)
+            {
+                myDie.setFaceValue(1);
+            }
+            else{
+                myDie.setFaceValue(2);
+            }
+            //myDie.setFaceValue(1);
             hand.add(myDie);
         }
         //how to sort an ArrayList by a specific variable: (GeeksforGeeks)

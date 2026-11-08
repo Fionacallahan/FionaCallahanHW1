@@ -19,7 +19,7 @@ public class PlayGame{
      * @param savedNumber
      * @return boolean
      */
-    public static boolean checkFarkle(ArrayList <Die> hand, ArrayList <Die> saved, int savedNumber)
+    public static boolean checkFarkle(ArrayList <Die> hand, ArrayList <Die> saved, int savedNumber, Player player)
     {
         int hotHandDetection = 0;
         // detect if there is a farkle thrown 
@@ -53,6 +53,7 @@ public class PlayGame{
         }
 
         int totalScore = 0;
+        player.setTotalScore(totalScore);
         if (farkle)
         {
             System.out.println("FARKLE! Points: 0");
@@ -129,28 +130,32 @@ public class PlayGame{
                             hand.get(index).setFaceValue(meld.get(index).getFaceValue());
                             meld.get(index).setFaceValue(0);
                         }
-                        Scorecard.checkStraight(meldScore, meldDiceSizesCount);
+
+                        // FIX THIS: NEED to figure out why total score is not calculating correctly? 
+                        meldScore += Scorecard.checkStraight(meldScore, meldDiceSizesCount);
 
                         //HOT HAND DETECTION
                         hotHandDetection += 1;
                         //System.out.println("hot hand detection: " + hotHandDetection);
                         if (hotHandDetection == 6)
                         {
-                            meldScore += Scorecard.checkStraight(meldScore, meldDiceSizesCount);
+                            meldScore = Scorecard.checkStraight(meldScore, meldDiceSizesCount);
+                            //print(meldScore);
                             Scorecard.printStatus(hand, meld, done);
+                            totalScore += meldScore;
+                            player.setTotalScore(totalScore);
+                            System.out.println("totalScore so far: " + totalScore);
                             System.out.println("***** HOT HAND! *****");
                             System.out.println("Would you like to (R) roll 6 new dice, or (B) bank and end ur turn? ");
                             String option3 = input.nextLine();
                             
                             if (option3.equals("B"))
                             {
-                                totalScore += meldScore;
+                                //totalScore += meldScore;
                                 done = true;
                             }
                             else if (option3.equals("R"))
                             {
-                                totalScore += meldScore;
-                                System.out.println("totalScore: " + totalScore);
 
                                 for (int k = 0; k < 6; k ++)
                                 {
@@ -184,6 +189,7 @@ public class PlayGame{
                     else if (letter == 'K')
                     {
                         totalScore += meldScore;
+                        player.setTotalScore(totalScore);
                         done = true;
                     }
 
@@ -258,6 +264,7 @@ public class PlayGame{
                         }
 
                         totalScore = 0;
+                        player.setTotalScore(totalScore);
                         if (farkle)
                         {
                             System.out.println("FARKLE! Points: 0");
@@ -271,7 +278,7 @@ public class PlayGame{
                 System.out.println();
         
             }
-            System.out.println("ROUND OVER. total score is now: " + totalScore);
+            //System.out.println("ROUND OVER. total score is now: " + totalScore);
         }
         
         return done;
@@ -284,36 +291,78 @@ public class PlayGame{
      * @param hand
      */
 
-    public static void startGame(String choice, ArrayList<Die> hand)
+    public static void startGame(String choice, ArrayList<Die> hand, int points, Player player, Player [] playerArray)
     {
+        int index = 0;
         //double check
         if (choice.equals("y")){
-            int savedNumber = 0;
-
-            //creating a new array to compare the dice Number costs 
-            ArrayList <Die> saved = new ArrayList<>();
-            for (int i = 0; i < 7; i++)
+            while (player.getTotalScore() < points)
             {
-                Die newDieSaved = new Die();
-                newDieSaved.setFaceValue(0);
-                saved.add(newDieSaved);
-            }
-            int current;
-            for (int i = 0; i < 6; i++)
-            {
-                current = saved.get(hand.get(i).getFaceValue()).getFaceValue();
-                saved.get(hand.get(i).getFaceValue()).setFaceValue(current + 1);
-    
-            }
+                int savedNumber = 0;
 
+                //creating a new array to compare the dice Number costs 
+                ArrayList <Die> saved = new ArrayList<>();
+                for (int i = 0; i < 7; i++)
+                {
+                    Die newDieSaved = new Die();
+                    newDieSaved.setFaceValue(0);
+                    saved.add(newDieSaved);
+                }
+
+                int current;
+                for (int i = 0; i < 6; i++)
+                {
+                    current = saved.get(hand.get(i).getFaceValue()).getFaceValue();
+                    saved.get(hand.get(i).getFaceValue()).setFaceValue(current + 1);
+        
+                }
+
+                checkFarkle(hand, saved, savedNumber, player);
+
+
+                System.out.println("Current Total Points: ");
+
+                for (int playerIndex = 0; playerIndex < playerArray.length; playerIndex ++)
+                {
+                    System.out.println("    " + playerArray[playerIndex].getName() + ": " + playerArray[playerIndex].getTotalScore());
+                }
+
+                System.out.println("ROUND OVER. total score is now: " + player.getTotalScore());
+
+                if (player.getTotalScore() >= points)
+                {
+                    int highestScore = 0;
+                    String winning_name;
+                    for (int i = 0; i < playerArray.length; i ++)
+                    {
+                        if (playerArray[i].getTotalScore() > highestScore)
+                        {
+                            winning_name = playerArray[i].getName();
+                            highestScore = playerArray[i].getTotalScore();
+                        }
+
+                    }
+                    System.exit(0);
+                }
+
+                player = playerArray[(index + 1) % playerArray.length];
+                System.out.println(player.getName() + " - It is now your turn. Your current score is " + player.getTotalScore());
+                System.out.println("You get to roll the dice");
+                //System.out.println(playerArray[0].getName() + ": your first move of the game is rolling the dice: ");
+                hand = HandOfDie.createHand();
+                player.setHand(hand);
+                HandOfDie.showHand(player.getHand());
+                hand = player.getHand();
+                
+
+            }
+            
+            
             //System.out.println("Quantity of each die value: ");
             //for (int i = 1; i < 7; i++)
             //{
               //  System.out.print(saved.get(i).getFaceValue() + " || ");
             //}
-
-
-            checkFarkle(hand, saved, savedNumber);
     }
 
 }}

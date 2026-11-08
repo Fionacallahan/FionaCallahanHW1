@@ -33,15 +33,77 @@ public class Farkle {
             System.out.println("*        Zag Farkle by Fiona Callahan!      *");
             System.out.println("               Copyright: 2026               ");
             System.out.println("*********************************************");
-
-            System.out.println("Welcome to Farkle! What is your name? ");
+            System.out.println("How many points would you like to play in this game? ");
             Scanner input = new Scanner(System.in);
-            String name = input.nextLine();
+            
+            //Scanner points = new Scanner(System.in);
+            String pointsAns = input.nextLine();
 
-            if (name.isEmpty())
+            int points;
+
+            if (pointsAns.isEmpty())
             {
-                name = "Unknown Player";
+                points = 10000;
+
             }
+            else{
+                points = Integer.parseInt(pointsAns.trim());
+            }
+
+            System.out.println("You will be playing the game until " + points + " amount."); 
+
+            //figure out number of players
+            System.out.println("How many players are going to be playing? ");
+            String playersPlaying = input.nextLine();
+
+            int numPlayers;
+            
+            if (playersPlaying.isEmpty())
+            {
+                numPlayers = 1;
+            }
+
+            else{
+                numPlayers = Integer.parseInt(playersPlaying.trim());
+            }
+
+            Player [] playerArray = new Player[numPlayers];
+
+            System.out.println("This game will be played with " + numPlayers + " number of players.");
+            // figure out how to iterate through every player: 
+            String playerName;
+            for (int i = 0; i < numPlayers; i++)
+            {
+                System.out.println("Welcome to Farkle! What is player " + (i + 1) + "'s name  ");
+                //Scanner input = new Scanner(System.in);
+                playerName = input.nextLine();
+
+                if (playerName.isEmpty())
+                {
+                    playerArray[i] = new Player();
+                    playerArray[i].setName("Unknown Player #" + (i + 1));
+                }
+                else{
+                    playerArray[i] = new Player();
+                    playerArray[i].setName(playerName);
+                }
+            }
+
+            //System.out.println("Welcome to Farkle! What is player 1's name?  ");
+            //Scanner input = new Scanner(System.in);
+            //String PlayerOne = input.nextLine();
+
+            //if (PlayerOne.isEmpty())
+            //{
+                //PlayerOne = "Unknown Player";
+            //}
+
+
+            //VARIABLES: 
+            //PlayerOne: player one name 
+            //numPlayers: number of players playing 
+            //points: number of points play to 
+
 
 
             //do not make longer than 10 lines 
@@ -49,11 +111,13 @@ public class Farkle {
             //combos: appendix A
             //may want to use an ArrayList to store a hand
 
-            System.out.println(name + ": your first move of the game is rolling the dice: ");
-            ArrayList <Die> hand = HandOfDie.createHand();
-            HandOfDie.showHand(hand);
 
-            PlayGame.startGame("y", hand);
+            System.out.println(playerArray[0].getName() + ": your first move of the game is rolling the dice: ");
+            ArrayList <Die> hand = HandOfDie.createHand();
+            playerArray[0].setHand(hand);
+            HandOfDie.showHand(playerArray[0].getHand());
+
+            PlayGame.startGame("y", playerArray[0].getHand(), points, playerArray[0], playerArray);
             //all other functions in different classes
         }
 

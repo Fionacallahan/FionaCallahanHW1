@@ -32,13 +32,29 @@ public class Scorecard {
         else{
             //check pairs 
             int pairCount = 0;
+            boolean fullHousepossibility = false;
             for (int i = 0; i < 6; i ++)
             {
                 if (meldDiceSizesCount[i] == 2)
                 {
                     pairCount += 1;
+
+                    //we know that there is a pair 
+                    fullHousepossibility = true;
                 }
             }
+
+            if (fullHousepossibility){
+                for (int i = 0; i < 6; i++)
+                {
+                    if (meldDiceSizesCount[i] == 3)
+                    {
+                        meldScore += 1500;
+                        return meldScore;
+                    }
+                }
+            }
+            
 
             if (pairCount == 3)
             {
@@ -77,6 +93,8 @@ public class Scorecard {
         }
         return meldScore;
     }
+
+    
 
     /**
      * The user interface portion that portrays what dice the user has and what they can move into the meld. 
